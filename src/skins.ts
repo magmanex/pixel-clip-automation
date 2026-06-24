@@ -2,7 +2,8 @@
 // Pure presentation — colors + bubble shape. ChatScene reads these; scenes.json
 // picks one via the "skin" field (omit = whatsapp).
 
-export type SkinName = "whatsapp" | "line" | "ig" | "messenger";
+import type { SkinName } from "./schema";
+export type { SkinName }; // re-export; single source is schema.ts (skinNameSchema)
 
 export type Skin = {
   appBg: string; // scene background

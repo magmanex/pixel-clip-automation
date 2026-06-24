@@ -1,7 +1,7 @@
 import { Composition } from "remotion";
 import scenes from "../scenes.json";
 import { Short } from "./Video";
-import { FPS, WIDTH, HEIGHT, totalFrames, Scene } from "./schema";
+import { FPS, WIDTH, HEIGHT, totalFrames, Scene, shortSchema } from "./schema";
 
 // #10 batch: one composition per clips/*.json (id "Clip-<name>"), plus the
 // default "Short" from scenes.json. Drop a JSON file in clips/ → new comp.
@@ -18,9 +18,9 @@ export const RemotionRoot: React.FC = () => {
   const data = scenes as Scene[];
   return (
     <>
-      <Composition id="Short" component={Short} durationInFrames={totalFrames(data)} defaultProps={{ scenes: data }} {...dims} />
+      <Composition id="Short" component={Short} schema={shortSchema} durationInFrames={totalFrames(data)} defaultProps={{ scenes: data }} {...dims} />
       {clips.map((c) => (
-        <Composition key={c.id} id={c.id} component={Short} durationInFrames={totalFrames(c.data)} defaultProps={{ scenes: c.data }} {...dims} />
+        <Composition key={c.id} id={c.id} component={Short} schema={shortSchema} durationInFrames={totalFrames(c.data)} defaultProps={{ scenes: c.data }} {...dims} />
       ))}
     </>
   );
