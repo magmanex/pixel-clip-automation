@@ -22,14 +22,39 @@ export type ChatHeader = {
   subtitle?: string; // e.g. "online", "พิมพ์อยู่..."
 };
 
+// #5 transition played when ENTERING this scene (between prev scene and this one).
+// First scene's transition is ignored. "cut" = no transition (hard cut).
+export type Transition = {
+  type: "fade" | "slide" | "wipe" | "cut";
+  durationSec?: number;
+  direction?: "from-left" | "from-right" | "from-top" | "from-bottom";
+};
+
 export type Scene = {
   type: "chat";
   title?: string;
   header?: ChatHeader;
   durationSec: number;
   messages: Message[];
+  transition?: Transition;
 };
 
+export const DEFAULT_TRANSITION: Transition = { type: "fade" };
+const DEFAULT_TRANSITION_SEC = 0.5;
+
 export const sceneFrames = (s: Scene) => Math.round(s.durationSec * FPS);
+
+// Effective transition entering scene i (null for the first scene).
+export const sceneTransition = (s: Scene, i: number): Transition | null =>
+  i === 0 ? null : s.transition ?? DEFAULT_TRANSITION;
+
+// Frames a transition overlaps (0 for none/cut). TransitionSeries shortens the
+// timeline by this much per transition, so total must subtract it.
+export const transitionFrames = (t: Transition | null) =>
+  !t || t.type === "cut" ? 0 : Math.round((t.durationSec ?? DEFAULT_TRANSITION_SEC) * FPS);
+
 export const totalFrames = (scenes: Scene[]) =>
-  scenes.reduce((n, s) => n + sceneFrames(s), 0);
+  scenes.reduce(
+    (n, s, i) => n + sceneFrames(s) - transitionFrames(sceneTransition(s, i)),
+    0,
+  );

@@ -42,8 +42,7 @@ Flow: `scenes.json` → `Root` (composition) → `Video` (Series of scenes) → 
 
 - Vertical 1080×1920 always (YouTube Shorts). Change in `schema.ts` if needed.
 - Message timing is frame-based, derived from `FPS`. Use the helpers in `schema.ts`; don't hardcode frame counts elsewhere.
-- This is a render-first MVP. Deliberate omissions, with upgrade paths marked by `ponytail:` comments in the code:
-  - **Transitions**: currently hard cuts via `<Series>`. Swap to `<TransitionSeries>` (`@remotion/transitions`) for fade/slide.
-  - **Audio (SFX + BGM)**: not wired yet. See the comment in `ChatScene.tsx` — drop files in `public/` and add `<Audio src={staticFile(...)}/>`.
-  - **Split-screen / on-top overlay scenes**: not built. Add new `type` values to `Scene` and a matching component, branch in `Video.tsx`.
-  - **Drag-drop editor GUI**: intentionally not built. The plan is to build a UI later that reads/writes `scenes.json` once the video output is proven. Keep `scenes.json` as the contract between any future editor and the renderer.
+- Built (see `task.md` for status): chat scene with typing indicator + bottom-anchored scroll, header, per-message timing (`delaySec`/`typingSec`), audio (SFX per message + looping BGM in `config.ts`), and scene transitions (`@remotion/transitions` via `<TransitionSeries>`; per-scene `transition` field, default fade).
+- Not built yet (deliberate; `task.md` P2/P3):
+  - **Split-screen / on-top overlay scenes**: add new `type` values to `Scene` and a matching component, branch in `Video.tsx`.
+  - **Drag-drop editor GUI**: intentionally deferred until the video output is proven. Keep `scenes.json` as the contract between any future editor and the renderer.

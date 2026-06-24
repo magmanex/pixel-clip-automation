@@ -1,23 +1,49 @@
-import { AbsoluteFill, Audio, Series, staticFile } from "remotion";
+import { Fragment } from "react";
+import { AbsoluteFill, Audio, staticFile } from "remotion";
+import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import type { TransitionPresentation } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
+import { slide } from "@remotion/transitions/slide";
+import { wipe } from "@remotion/transitions/wipe";
 import { ChatScene } from "./ChatScene";
-import { Scene, sceneFrames } from "./schema";
+import { Scene, Transition, sceneFrames, sceneTransition, transitionFrames } from "./schema";
 import { BGM_FILE, BGM_VOLUME } from "./config";
 
-// ponytail: Series = hard cuts between scenes. Want fade/slide?
-// swap to <TransitionSeries> from @remotion/transitions (npm i @remotion/transitions).
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const presentation = (t: Transition): TransitionPresentation<any> => {
+  switch (t.type) {
+    case "slide":
+      return slide({ direction: t.direction ?? "from-right" });
+    case "wipe":
+      return wipe({ direction: t.direction ?? "from-right" });
+    default:
+      return fade();
+  }
+};
+
 export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#0b141a" }}>
-      {BGM_FILE && (
-        <Audio src={staticFile(BGM_FILE)} volume={BGM_VOLUME} loop />
-      )}
-      <Series>
-        {scenes.map((scene, i) => (
-          <Series.Sequence key={i} durationInFrames={sceneFrames(scene)}>
-            <ChatScene scene={scene} />
-          </Series.Sequence>
-        ))}
-      </Series>
+      {BGM_FILE && <Audio src={staticFile(BGM_FILE)} volume={BGM_VOLUME} loop />}
+      <TransitionSeries>
+        {scenes.map((scene, i) => {
+          const t = sceneTransition(scene, i);
+          const frames = transitionFrames(t);
+          return (
+            <Fragment key={i}>
+              {t && frames > 0 && (
+                <TransitionSeries.Transition
+                  presentation={presentation(t)}
+                  timing={linearTiming({ durationInFrames: frames })}
+                />
+              )}
+              <TransitionSeries.Sequence durationInFrames={sceneFrames(scene)}>
+                <ChatScene scene={scene} />
+              </TransitionSeries.Sequence>
+            </Fragment>
+          );
+        })}
+      </TransitionSeries>
     </AbsoluteFill>
   );
 };

@@ -13,6 +13,7 @@
   {
     "type": "chat",
     "title": "ภาค 2",
+    "transition": { "type": "slide", "direction": "from-right" },
     "durationSec": 5,
     "messages": [
       { "side": "left", "name": "แม่", "text": "ลูกอยู่ไหน" },
@@ -23,6 +24,7 @@
   {
     "type": "chat",
     "title": "แชทยาว (ทดสอบ scroll)",
+    "transition": { "type": "wipe", "direction": "from-bottom" },
     "durationSec": 10,
     "messages": [
       { "side": "left", "name": "เพื่อน", "text": "ยืมเงินหน่อยดิ" },

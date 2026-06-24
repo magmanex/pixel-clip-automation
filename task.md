@@ -18,7 +18,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 (all done — output is postable)
 
 ## P1 — variety so videos aren't samey
-- [ ] #5 Transitions between scenes (@remotion/transitions: fade/slide)
+- [x] #5 Transitions between scenes (fade/slide/wipe/cut, per-scene, default fade)
 - [ ] #6 Intro hook card + outro (subscribe CTA)
 - [ ] #7 Chat skins (LINE / IG / Messenger looks)
 
