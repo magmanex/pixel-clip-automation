@@ -1,4 +1,5 @@
-import { AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame, useVideoConfig, spring, interpolate } from "remotion";
+import { AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, staticFile, useCurrentFrame, useVideoConfig, spring, interpolate } from "remotion";
+import { Media } from "./schema";
 import { ChatHeader, Message, ChatScene as ChatSceneData } from "./schema";
 import { SKINS, Skin } from "./skins";
 import { DEFAULT_SFX, SFX_VOLUME } from "./config";
@@ -54,6 +55,18 @@ const Bubble: React.FC<{ isRight: boolean; skin: Skin; children: React.ReactNode
   </div>
 );
 
+// #9 full-screen background media + bottom scrim so bubbles stay readable.
+const MediaBg: React.FC<{ media: Media }> = ({ media }) => (
+  <AbsoluteFill style={{ zIndex: 0 }}>
+    {media.kind === "video" ? (
+      <OffthreadVideo src={staticFile(media.src)} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+    ) : (
+      <Img src={staticFile(media.src)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+    )}
+    <AbsoluteFill style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.55) 100%)" }} />
+  </AbsoluteFill>
+);
+
 const TypingDots: React.FC<{ skin: Skin }> = ({ skin }) => {
   const frame = useCurrentFrame();
   return (
@@ -73,7 +86,10 @@ export const ChatScene: React.FC<{ scene: ChatSceneData }> = ({ scene }) => {
   const skin = SKINS[scene.skin ?? "whatsapp"];
 
   return (
-    <AbsoluteFill style={{ background: skin.appBg, padding: 60, fontFamily: "sans-serif", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <AbsoluteFill style={{ background: scene.media ? "transparent" : skin.appBg, fontFamily: "sans-serif", overflow: "hidden" }}>
+      {scene.media && <MediaBg media={scene.media} />}
+      {/* Content layer above the media (positioned media would otherwise paint over in-flow content). */}
+      <AbsoluteFill style={{ padding: 60, display: "flex", flexDirection: "column", zIndex: 1 }}>
       {scene.header && <Header header={scene.header} skin={skin} />}
       {scene.title && (
         <div style={{ flex: "none", color: skin.titleColor, fontSize: 44, textAlign: "center", marginBottom: 30 }}>
@@ -114,6 +130,7 @@ export const ChatScene: React.FC<{ scene: ChatSceneData }> = ({ scene }) => {
           );
         })}
       </div>
+      </AbsoluteFill>
 
       {/* SFX: one sound when each bubble appears (not during typing). Per-message
           override via "sfx" in scenes.json; "" or null = silent. Default in config.ts. */}

@@ -40,6 +40,18 @@
     ]
   },
   {
+    "type": "overlay",
+    "durationSec": 4,
+    "transition": { "type": "fade" },
+    "media": { "src": "overlay-bg.svg", "kind": "image" },
+    "header": { "name": "แกงค์เที่ยว", "subtitle": "3 คน" },
+    "messages": [
+      { "side": "left", "name": "เอ", "text": "ดูวิวสิ สวยมาก" },
+      { "side": "right", "name": "เรา", "text": "อยู่ไหนเนี่ย" },
+      { "side": "left", "name": "เอ", "text": "ออฟฟิศ ชั้น 20 555" }
+    ]
+  },
+  {
     "type": "chat",
     "skin": "messenger",
     "title": "แชทยาว (ทดสอบ scroll)",

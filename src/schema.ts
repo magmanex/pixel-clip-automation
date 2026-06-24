@@ -38,12 +38,16 @@ type SceneBase = {
   transition?: Transition;
 };
 
+// #9 background media for overlay scenes (image/video behind the chat).
+export type Media = { src: string; kind?: "image" | "video" }; // src = public/ path; kind default "image"
+
 export type ChatScene = SceneBase & {
-  type: "chat";
+  type: "chat" | "overlay";
   title?: string;
   header?: ChatHeader;
   messages: Message[];
   skin?: SkinName; // #7 look; omit = whatsapp
+  media?: Media; // #9 overlay: full-screen image/video behind the chat
 };
 
 // #6 intro hook / outro card. Same shape for both — full-screen centered text.

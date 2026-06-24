@@ -24,7 +24,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
 ## P2 — scene types from original vision
 - [x] #8 Split left/right scene — type "split", two panels (image/emoji/text), slide in from edges; `src/SplitScene.tsx`
-- [ ] #9 On-top overlay scene (image/video + chat)
+- [x] #9 On-top overlay scene (image/video + chat) — type "overlay" + `media` field; ChatScene renders media behind a scrim (reuses chat timeline)
 
 ## P3 — scale / workflow
 - [ ] #10 Batch render multiple clips (multiple compositions)
