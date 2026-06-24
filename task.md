@@ -27,5 +27,5 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] #9 On-top overlay scene (image/video + chat) — type "overlay" + `media` field; ChatScene renders media behind a scrim (reuses chat timeline)
 
 ## P3 — scale / workflow
-- [ ] #10 Batch render multiple clips (multiple compositions)
+- [x] #10 Batch render multiple clips — drop a JSON in `clips/`, get a `Clip-<name>` composition; `npm run render:all` renders every clip to `out/<name>.mp4`
 - [ ] #11 Drag-drop editor GUI — ONLY when JSON becomes painful (YAGNI until then)

@@ -4,7 +4,8 @@
   "description": "YouTube Shorts chat-story generator (Remotion). Render-first MVP.",
   "scripts": {
     "dev": "remotion studio",
-    "render": "remotion render Short out/video.mp4"
+    "render": "remotion render Short out/video.mp4",
+    "render:all": "for f in clips/*.json; do n=$(basename \"$f\" .json); remotion render \"Clip-$n\" \"out/$n.mp4\"; done"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
