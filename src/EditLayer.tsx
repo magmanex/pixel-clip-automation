@@ -15,7 +15,10 @@ export const EditProvider: React.FC<{ src?: string; children: ReactNode }> = ({ 
   const [req, setReq] = useState<EditReq | null>(null);
   const [draft, setDraft] = useState("");
 
-  if (!getRemotionEnvironment().isStudio || !src) return <>{children}</>;
+  // Disable only during the actual headless render (isStudio is unreliable in the
+  // preview iframe; isRendering is true only when rendering the MP4). So the modal
+  // works in the Studio preview but never ships in output.
+  if (getRemotionEnvironment().isRendering || !src) return <>{children}</>;
 
   const open = (r: EditReq) => { setReq(r); setDraft(r.text); };
   const save = async () => {

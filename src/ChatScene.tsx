@@ -118,6 +118,8 @@ export const ChatScene: React.FC<{ scene: ChatSceneData; sceneIndex?: number }> 
                 maxWidth: "75%",
                 opacity: typing ? 1 : p,
                 transform: typing ? undefined : `translateY(${(1 - p) * 30}px) scale(${0.9 + p * 0.1})`,
+                cursor: sceneIndex !== undefined && !typing ? "pointer" : undefined,
+                pointerEvents: "auto",
               }}
             >
               {m.name && !typing && (
