@@ -7,6 +7,7 @@ import { slide } from "@remotion/transitions/slide";
 import { wipe } from "@remotion/transitions/wipe";
 import { ChatScene } from "./ChatScene";
 import { CardScene } from "./CardScene";
+import { SplitScene } from "./SplitScene";
 import { Scene, Transition, sceneFrames, sceneTransition, transitionFrames } from "./schema";
 import { BGM_FILE, BGM_VOLUME } from "./config";
 
@@ -41,6 +42,8 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
               <TransitionSeries.Sequence durationInFrames={sceneFrames(scene)}>
                 {scene.type === "card" ? (
                   <CardScene scene={scene} />
+                ) : scene.type === "split" ? (
+                  <SplitScene scene={scene} />
                 ) : (
                   <ChatScene scene={scene} />
                 )}

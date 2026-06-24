@@ -23,7 +23,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 - [x] #7 Chat skins (LINE / IG / Messenger looks) — `skin` field on chat scene, palettes in `src/skins.ts`
 
 ## P2 — scene types from original vision
-- [ ] #8 Split left/right scene
+- [x] #8 Split left/right scene — type "split", two panels (image/emoji/text), slide in from edges; `src/SplitScene.tsx`
 - [ ] #9 On-top overlay scene (image/video + chat)
 
 ## P3 — scale / workflow

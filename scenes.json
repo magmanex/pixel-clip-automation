@@ -19,6 +19,15 @@
     ]
   },
   {
+    "type": "split",
+    "durationSec": 2.5,
+    "transition": { "type": "slide", "direction": "from-bottom" },
+    "panels": [
+      { "background": "#1a2a6c", "emoji": "😎", "title": "เรา", "subtitle": "ชิลๆ" },
+      { "background": "#b21f1f", "emoji": "😤", "title": "เจ้านาย", "subtitle": "เดือดมาก" }
+    ]
+  },
+  {
     "type": "chat",
     "skin": "ig",
     "title": "ภาค 2",

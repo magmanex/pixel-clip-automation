@@ -56,7 +56,23 @@ export type CardScene = SceneBase & {
   background?: string; // CSS color; default dark
 };
 
-export type Scene = ChatScene | CardScene;
+// #8 split scene: two panels side by side (or top/bottom). Each panel is an
+// image fill and/or centered emoji + text. Panels slide in from their edges.
+export type SplitPanel = {
+  background?: string; // CSS color behind the panel
+  image?: string; // public/ path, covers the panel
+  emoji?: string;
+  title?: string;
+  subtitle?: string;
+};
+
+export type SplitScene = SceneBase & {
+  type: "split";
+  direction?: "horizontal" | "vertical"; // horizontal = left|right (default), vertical = top/bottom
+  panels: [SplitPanel, SplitPanel];
+};
+
+export type Scene = ChatScene | CardScene | SplitScene;
 
 export const DEFAULT_TRANSITION: Transition = { type: "fade" };
 const DEFAULT_TRANSITION_SEC = 0.5;
