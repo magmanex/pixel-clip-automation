@@ -23,6 +23,14 @@ ordered by priority. Keep it accurate.
 - Status edits are surgical — don't rewrite the whole file.
 - Don't duplicate detail that lives in code or CLAUDE.md; task.md tracks *status*, not design.
 
+## Capture reusable knowledge as skills (token efficiency)
+When you find a path, command sequence, or fact you expect to use again or repeat,
+**create or update a skill immediately** — don't wait. Repeated re-derivation wastes tokens.
+- Recurring within this project → add it to the relevant skill (or "Quick facts" below).
+- A distinct reusable workflow → make a new skill under `.claude/skills/<name>/SKILL.md`
+  with a clear `name` + `description` so it auto-triggers.
+- Keep entries terse; one fact per line. Prune anything that goes stale.
+
 ## Quick facts (avoid re-deriving — saves tokens)
 - Composition id is `Short`; vertical 1080×1920, 30fps. Constants in `src/schema.ts`.
 - `scenes.json` (repo root) is the content + the contract. Scene types: `chat` and `card`
