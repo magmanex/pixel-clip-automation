@@ -1,0 +1,20 @@
+[
+  {
+    "type": "card",
+    "durationSec": 2,
+    "emoji": "🍜",
+    "title": "ตอนสั่งก๋วยเตี๋ยว",
+    "subtitle": "เรื่องจริงที่เจ็บปวด"
+  },
+  {
+    "type": "chat",
+    "skin": "line",
+    "header": { "name": "ร้านเจ๊", "subtitle": "ออนไลน์" },
+    "durationSec": 5,
+    "messages": [
+      { "side": "right", "name": "เรา", "text": "พิเศษ ไม่ผัก ไม่ถั่ว" },
+      { "side": "left", "name": "เจ๊", "text": "ได้จ้า" },
+      { "side": "left", "name": "เจ๊", "text": "[ใส่ผักเต็มชาม]", "delaySec": 1 }
+    ]
+  }
+]

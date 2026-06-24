@@ -1,5 +1,5 @@
-import { Fragment } from "react";
-import { AbsoluteFill, Audio, staticFile } from "remotion";
+import { Fragment, useEffect, useState } from "react";
+import { AbsoluteFill, Audio, staticFile, watchStaticFile, getRemotionEnvironment } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import type { TransitionPresentation } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
@@ -7,6 +7,8 @@ import { slide } from "@remotion/transitions/slide";
 import { wipe } from "@remotion/transitions/wipe";
 import { ChatScene } from "./ChatScene";
 import { CardScene } from "./CardScene";
+import { SplitScene } from "./SplitScene";
+import { EditProvider } from "./EditLayer";
 import { Scene, Transition, sceneFrames, sceneTransition, transitionFrames } from "./schema";
 import { BGM_FILE, BGM_VOLUME } from "./config";
 
@@ -41,8 +43,10 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
               <TransitionSeries.Sequence durationInFrames={sceneFrames(scene)}>
                 {scene.type === "card" ? (
                   <CardScene scene={scene} />
+                ) : scene.type === "split" ? (
+                  <SplitScene scene={scene} />
                 ) : (
-                  <ChatScene scene={scene} />
+                  <ChatScene scene={scene} sceneIndex={i} />
                 )}
               </TransitionSeries.Sequence>
             </Fragment>
@@ -50,5 +54,27 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
         })}
       </TransitionSeries>
     </AbsoluteFill>
+  );
+};
+
+// Same as Short, but wrapped so chat bubbles are double-click editable in Studio,
+// persisting to public/scenes.json (#11). Used only by the "Short" composition.
+// Re-fetches the file when it changes (e.g. after an edit) so the preview updates
+// live without a manual refresh. Initial data comes from calculateMetadata (props).
+const SRC = "scenes.json";
+export const EditableShort: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
+  const [data, setData] = useState(scenes);
+  useEffect(() => setData(scenes), [scenes]);
+  useEffect(() => {
+    if (getRemotionEnvironment().isRendering) return;
+    const { cancel } = watchStaticFile(SRC, () => {
+      fetch(staticFile(SRC)).then((r) => r.json()).then(setData).catch(() => {});
+    });
+    return cancel;
+  }, []);
+  return (
+    <EditProvider src={SRC}>
+      <Short scenes={data} />
+    </EditProvider>
   );
 };

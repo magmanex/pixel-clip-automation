@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1920" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a1c71"/>
+      <stop offset="50%" stop-color="#d76d77"/>
+      <stop offset="100%" stop-color="#ffaf7b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#g)"/>
+  <circle cx="300" cy="500" r="220" fill="rgba(255,255,255,0.12)"/>
+  <circle cx="850" cy="900" r="160" fill="rgba(255,255,255,0.10)"/>
+  <text x="540" y="420" font-family="sans-serif" font-size="120" fill="rgba(255,255,255,0.9)" text-anchor="middle">📸</text>
+</svg>
