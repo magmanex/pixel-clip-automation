@@ -1,0 +1,38 @@
+[
+  {
+    "type": "chat",
+    "header": { "name": "เพื่อนซี้", "subtitle": "ออนไลน์" },
+    "durationSec": 6,
+    "messages": [
+      { "side": "left", "name": "เพื่อน", "text": "เฮ้ย ตื่นยัง" },
+      { "side": "right", "name": "เรา", "text": "ตื่นสิ ทำไม" },
+      { "side": "left", "name": "เพื่อน", "text": "วันนี้เสาร์ว่ะ" },
+      { "side": "right", "name": "เรา", "text": "...แล้วกูใส่ชุดทำงานมาทำไม", "delaySec": 1, "typingSec": 1.2 }
+    ]
+  },
+  {
+    "type": "chat",
+    "title": "ภาค 2",
+    "durationSec": 5,
+    "messages": [
+      { "side": "left", "name": "แม่", "text": "ลูกอยู่ไหน" },
+      { "side": "right", "name": "เรา", "text": "อยู่ที่ทำงานครับ" },
+      { "side": "left", "name": "แม่", "text": "แม่ยืนอยู่หน้าออฟฟิศลูก" }
+    ]
+  },
+  {
+    "type": "chat",
+    "title": "แชทยาว (ทดสอบ scroll)",
+    "durationSec": 10,
+    "messages": [
+      { "side": "left", "name": "เพื่อน", "text": "ยืมเงินหน่อยดิ" },
+      { "side": "right", "name": "เรา", "text": "เท่าไร" },
+      { "side": "left", "name": "เพื่อน", "text": "ห้าพัน" },
+      { "side": "right", "name": "เรา", "text": "เอาไปทำไม" },
+      { "side": "left", "name": "เพื่อน", "text": "จะซื้อของขวัญวันเกิดแก" },
+      { "side": "right", "name": "เรา", "text": "วันเกิดเราเดือนหน้านะ" },
+      { "side": "left", "name": "เพื่อน", "text": "งั้นเดี๋ยวคืนเดือนหน้า" },
+      { "side": "right", "name": "เรา", "text": "หา" }
+    ]
+  }
+]
