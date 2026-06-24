@@ -1,5 +1,12 @@
 [
   {
+    "type": "card",
+    "durationSec": 2.5,
+    "emoji": "😱",
+    "title": "แชทหลุดโลก",
+    "subtitle": "ที่จะทำให้คุณกุมขมับ"
+  },
+  {
     "type": "chat",
     "header": { "name": "เพื่อนซี้", "subtitle": "ออนไลน์" },
     "durationSec": 6,
@@ -36,5 +43,14 @@
       { "side": "left", "name": "เพื่อน", "text": "งั้นเดี๋ยวคืนเดือนหน้า" },
       { "side": "right", "name": "เรา", "text": "หา" }
     ]
+  },
+  {
+    "type": "card",
+    "durationSec": 3,
+    "transition": { "type": "fade" },
+    "emoji": "🔔",
+    "title": "ชอบคลิปนี้?",
+    "subtitle": "มีแชทฮาๆ ทุกวัน",
+    "cta": "กดติดตามด้วยน้า"
   }
 ]

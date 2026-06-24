@@ -22,3 +22,16 @@ ordered by priority. Keep it accurate.
 - One line per task, keep the `#N` id stable so it can be referenced.
 - Status edits are surgical — don't rewrite the whole file.
 - Don't duplicate detail that lives in code or CLAUDE.md; task.md tracks *status*, not design.
+
+## Quick facts (avoid re-deriving — saves tokens)
+- Composition id is `Short`; vertical 1080×1920, 30fps. Constants in `src/schema.ts`.
+- `scenes.json` (repo root) is the content + the contract. Scene types: `chat` and `card`
+  (discriminated union in `schema.ts`). Add a scene type = union member + component +
+  branch in `src/Video.tsx`.
+- Verify cheaply, in order: `npx tsc --noEmit` → `npx remotion still Short out/x.png --frame=N`
+  → Read the PNG. Use a **still**, not a full `npm run render`, to check layout — far cheaper.
+- Frame math: `totalFrames()` subtracts transition overlaps, so a scene's start frame is NOT
+  the naive sum of prior durations. To land mid-scene N, render a still and nudge the frame
+  rather than computing it.
+- Transitions return incompatible generic types; `presentation()` in Video.tsx is annotated
+  `TransitionPresentation<any>` on purpose — don't "fix" it.

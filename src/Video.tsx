@@ -6,6 +6,7 @@ import { fade } from "@remotion/transitions/fade";
 import { slide } from "@remotion/transitions/slide";
 import { wipe } from "@remotion/transitions/wipe";
 import { ChatScene } from "./ChatScene";
+import { CardScene } from "./CardScene";
 import { Scene, Transition, sceneFrames, sceneTransition, transitionFrames } from "./schema";
 import { BGM_FILE, BGM_VOLUME } from "./config";
 
@@ -38,7 +39,11 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
                 />
               )}
               <TransitionSeries.Sequence durationInFrames={sceneFrames(scene)}>
-                <ChatScene scene={scene} />
+                {scene.type === "card" ? (
+                  <CardScene scene={scene} />
+                ) : (
+                  <ChatScene scene={scene} />
+                )}
               </TransitionSeries.Sequence>
             </Fragment>
           );

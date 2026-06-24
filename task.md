@@ -19,7 +19,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 
 ## P1 — variety so videos aren't samey
 - [x] #5 Transitions between scenes (fade/slide/wipe/cut, per-scene, default fade)
-- [ ] #6 Intro hook card + outro (subscribe CTA)
+- [x] #6 Intro hook + outro card (type "card": emoji/title/subtitle/cta)
 - [ ] #7 Chat skins (LINE / IG / Messenger looks)
 
 ## P2 — scene types from original vision

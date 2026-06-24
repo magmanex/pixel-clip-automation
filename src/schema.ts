@@ -30,14 +30,30 @@ export type Transition = {
   direction?: "from-left" | "from-right" | "from-top" | "from-bottom";
 };
 
-export type Scene = {
+// Fields common to every scene.
+type SceneBase = {
+  durationSec: number;
+  transition?: Transition;
+};
+
+export type ChatScene = SceneBase & {
   type: "chat";
   title?: string;
   header?: ChatHeader;
-  durationSec: number;
   messages: Message[];
-  transition?: Transition;
 };
+
+// #6 intro hook / outro card. Same shape for both — full-screen centered text.
+export type CardScene = SceneBase & {
+  type: "card";
+  title: string;
+  subtitle?: string;
+  emoji?: string;
+  cta?: string; // call to action, e.g. "กดติดตามด้วยน้า 🔔"
+  background?: string; // CSS color; default dark
+};
+
+export type Scene = ChatScene | CardScene;
 
 export const DEFAULT_TRANSITION: Transition = { type: "fade" };
 const DEFAULT_TRANSITION_SEC = 0.5;

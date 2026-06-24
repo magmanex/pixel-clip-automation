@@ -1,5 +1,5 @@
 import { AbsoluteFill, Audio, Img, Sequence, staticFile, useCurrentFrame, useVideoConfig, spring, interpolate } from "remotion";
-import { ChatHeader, Message, Scene } from "./schema";
+import { ChatHeader, Message, ChatScene as ChatSceneData } from "./schema";
 import { DEFAULT_SFX, SFX_VOLUME } from "./config";
 
 const LEAD = 10; // frames before the first message starts typing
@@ -65,7 +65,7 @@ const TypingDots: React.FC = () => {
   );
 };
 
-export const ChatScene: React.FC<{ scene: Scene }> = ({ scene }) => {
+export const ChatScene: React.FC<{ scene: ChatSceneData }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const tl = timeline(scene.messages, fps);
