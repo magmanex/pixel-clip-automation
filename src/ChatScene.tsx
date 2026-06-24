@@ -2,7 +2,6 @@ import { AbsoluteFill, Audio, Img, OffthreadVideo, Sequence, staticFile, useCurr
 import { Media } from "./schema";
 import { ChatHeader, Message, ChatScene as ChatSceneData } from "./schema";
 import { SKINS, Skin } from "./skins";
-import { useEditor } from "./EditLayer";
 import { DEFAULT_SFX, SFX_VOLUME } from "./config";
 
 const LEAD = 10; // frames before the first message starts typing
@@ -85,7 +84,6 @@ export const ChatScene: React.FC<{ scene: ChatSceneData; sceneIndex?: number }> 
   const { fps } = useVideoConfig();
   const tl = timeline(scene.messages, fps);
   const skin = SKINS[scene.skin ?? "whatsapp"];
-  const editText = useEditor(); // no-op outside Studio / non-editable comps
 
   return (
     <AbsoluteFill style={{ background: scene.media ? "transparent" : skin.appBg, fontFamily: "sans-serif", overflow: "hidden" }}>
@@ -111,8 +109,10 @@ export const ChatScene: React.FC<{ scene: ChatSceneData; sceneIndex?: number }> 
           return (
             <div
               key={i}
-              title={sceneIndex !== undefined ? "ดับเบิลคลิกเพื่อแก้ข้อความ" : undefined}
-              onDoubleClick={sceneIndex !== undefined && !typing ? () => editText({ sceneIndex, msgIndex: i, text: m.text }) : undefined}
+              title={sceneIndex !== undefined && !typing ? "ดับเบิลคลิกเพื่อแก้ข้อความ" : undefined}
+              data-edit-scene={sceneIndex !== undefined && !typing ? sceneIndex : undefined}
+              data-edit-msg={sceneIndex !== undefined && !typing ? i : undefined}
+              data-edit-text={sceneIndex !== undefined && !typing ? m.text : undefined}
               style={{
                 alignSelf: isRight ? "flex-end" : "flex-start",
                 maxWidth: "75%",

@@ -1,28 +1,50 @@
-import { createContext, useContext, useState, ReactNode } from "react";
-import { AbsoluteFill, getRemotionEnvironment, staticFile } from "remotion";
+import { useState, useEffect, ReactNode } from "react";
+import { createPortal } from "react-dom";
+import { getRemotionEnvironment, staticFile } from "remotion";
 import { writeStaticFile } from "@remotion/studio";
 
-// Double-click a chat bubble in Studio → modal to edit that message's text,
-// persisted back to the source JSON in public/. Studio-only: in render/player
-// the provider is a passthrough, so nothing ships in the MP4.
+// Edit chat text in the Studio preview: double-click a bubble → modal → saves
+// back to the source JSON in public/.
+//
+// Two Studio quirks this works around:
+//  - The Studio draws an SVG selection overlay (pointer-events) on top of the
+//    canvas, so onClick handlers on our elements never fire. We listen for
+//    `dblclick` on window in the capture phase instead, and hit-test bubbles by
+//    their data-edit-* attributes + bounding rect.
+//  - Anything rendered inside the composition is also under that overlay, so the
+//    modal is portaled to document.body (above the overlay, fully interactive).
+//
+// Disabled during the actual headless render (isRendering), so nothing ships in
+// the MP4. src = path under public/ (e.g. "scenes.json").
 
 type EditReq = { sceneIndex: number; msgIndex: number; text: string };
-const Ctx = createContext<(r: EditReq) => void>(() => {});
-export const useEditor = () => useContext(Ctx);
 
-// src = path under public/ (e.g. "scenes.json"). Omit/non-studio = editing off.
 export const EditProvider: React.FC<{ src?: string; children: ReactNode }> = ({ src, children }) => {
   const [req, setReq] = useState<EditReq | null>(null);
   const [draft, setDraft] = useState("");
+  const active = !getRemotionEnvironment().isRendering && !!src;
 
-  // Disable only during the actual headless render (isStudio is unreliable in the
-  // preview iframe; isRendering is true only when rendering the MP4). So the modal
-  // works in the Studio preview but never ships in output.
-  if (getRemotionEnvironment().isRendering || !src) return <>{children}</>;
+  useEffect(() => {
+    if (!active) return;
+    const onDbl = (e: MouseEvent) => {
+      const els = [...document.querySelectorAll<HTMLElement>("[data-edit-scene]")].reverse();
+      const hit = els.find((el) => {
+        const r = el.getBoundingClientRect();
+        return e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+      });
+      if (!hit) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const text = hit.dataset.editText ?? "";
+      setReq({ sceneIndex: Number(hit.dataset.editScene), msgIndex: Number(hit.dataset.editMsg), text });
+      setDraft(text);
+    };
+    window.addEventListener("dblclick", onDbl, true);
+    return () => window.removeEventListener("dblclick", onDbl, true);
+  }, [active]);
 
-  const open = (r: EditReq) => { setReq(r); setDraft(r.text); };
   const save = async () => {
-    if (!req) return;
+    if (!req || !src) return;
     const data = await fetch(staticFile(src)).then((r) => r.json());
     data[req.sceneIndex].messages[req.msgIndex].text = draft;
     await writeStaticFile({ filePath: src, contents: JSON.stringify(data, null, 2) });
@@ -30,29 +52,31 @@ export const EditProvider: React.FC<{ src?: string; children: ReactNode }> = ({ 
   };
 
   return (
-    <Ctx.Provider value={open}>
+    <>
       {children}
-      {req && (
-        <AbsoluteFill style={{ background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div style={{ background: "#fff", padding: 36, borderRadius: 18, width: 800, display: "flex", flexDirection: "column", gap: 18, fontFamily: "sans-serif" }}>
-            <div style={{ fontSize: 30, fontWeight: 700, color: "#111" }}>แก้ข้อความ</div>
-            <textarea
-              value={draft}
-              autoFocus
-              rows={4}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) save(); if (e.key === "Escape") setReq(null); }}
-              style={{ fontSize: 34, padding: 18, borderRadius: 10, border: "2px solid #ccc", color: "#111", fontFamily: "sans-serif", resize: "vertical" }}
-            />
-            <div style={{ display: "flex", gap: 14, justifyContent: "flex-end" }}>
-              <button onClick={() => setReq(null)} style={btn("#888")}>ยกเลิก</button>
-              <button onClick={save} style={btn("#005c4b")}>บันทึก (⌘↵)</button>
+      {req &&
+        createPortal(
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 999999, fontFamily: "sans-serif" }}>
+            <div style={{ background: "#fff", padding: 28, borderRadius: 14, width: 560, display: "flex", flexDirection: "column", gap: 14 }}>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#111" }}>แก้ข้อความ</div>
+              <textarea
+                value={draft}
+                autoFocus
+                rows={4}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) save(); if (e.key === "Escape") setReq(null); }}
+                style={{ fontSize: 22, padding: 12, borderRadius: 8, border: "2px solid #ccc", color: "#111", fontFamily: "sans-serif", resize: "vertical" }}
+              />
+              <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+                <button onClick={() => setReq(null)} style={btn("#888")}>ยกเลิก</button>
+                <button onClick={save} style={btn("#005c4b")}>บันทึก (⌘↵)</button>
+              </div>
             </div>
-          </div>
-        </AbsoluteFill>
-      )}
-    </Ctx.Provider>
+          </div>,
+          document.body,
+        )}
+    </>
   );
 };
 
-const btn = (bg: string): React.CSSProperties => ({ background: bg, color: "#fff", border: "none", fontSize: 28, padding: "14px 30px", borderRadius: 999, cursor: "pointer" });
+const btn = (bg: string): React.CSSProperties => ({ background: bg, color: "#fff", border: "none", fontSize: 18, padding: "10px 22px", borderRadius: 999, cursor: "pointer" });
