@@ -8,6 +8,7 @@ import { wipe } from "@remotion/transitions/wipe";
 import { ChatScene } from "./ChatScene";
 import { CardScene } from "./CardScene";
 import { SplitScene } from "./SplitScene";
+import { EditProvider } from "./EditLayer";
 import { Scene, Transition, sceneFrames, sceneTransition, transitionFrames } from "./schema";
 import { BGM_FILE, BGM_VOLUME } from "./config";
 
@@ -45,7 +46,7 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
                 ) : scene.type === "split" ? (
                   <SplitScene scene={scene} />
                 ) : (
-                  <ChatScene scene={scene} />
+                  <ChatScene scene={scene} sceneIndex={i} />
                 )}
               </TransitionSeries.Sequence>
             </Fragment>
@@ -55,3 +56,11 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
     </AbsoluteFill>
   );
 };
+
+// Same as Short, but wrapped so chat bubbles are double-click editable in Studio,
+// persisting to public/scenes.json (#11). Used only by the "Short" composition.
+export const EditableShort: React.FC<{ scenes: Scene[] }> = (props) => (
+  <EditProvider src="scenes.json">
+    <Short {...props} />
+  </EditProvider>
+);

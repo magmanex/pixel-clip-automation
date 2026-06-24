@@ -29,7 +29,12 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 ## P3 — scale / workflow
 - [x] #10 Batch render multiple clips — drop a JSON in `clips/`, get a `Clip-<name>` composition; `npm run render:all` renders every clip to `out/<name>.mp4`
 - [~] #11 Editor GUI
-  - [x] In-Studio editing: Zod schema on `Short` → Remotion Studio renders an
-    editable props form (edit chat text + see live preview). `npm run dev`, right panel.
-    Persistence: Studio "Save" writes `defaultProps` back into `Root.tsx` (not scenes.json).
-  - [ ] Full drag-drop GUI — still YAGNI until JSON becomes painful.
+  - [x] AI-generated JSON: `PROMPT.md` is the schema contract to feed any AI → save as
+    `public/scenes.json` (active video) or `clips/*.json` (batch).
+  - [x] Double-click-to-edit: data lives in `public/scenes.json`, loaded via
+    `calculateMetadata`. In Studio, double-click a chat bubble → modal → edits persist
+    back to the file (`@remotion/studio` writeStaticFile). Studio-only (no leak in render).
+    See `src/EditLayer.tsx`.
+  - [x] Clip props form: batch clips keep the Zod schema form for live tweaks.
+  - [ ] Full drag-drop timeline GUI (reorder/add/delete scenes, edit cards/splits) —
+    still YAGNI; current double-click + JSON covers editing.
