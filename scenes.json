@@ -8,6 +8,7 @@
   },
   {
     "type": "chat",
+    "skin": "line",
     "header": { "name": "เพื่อนซี้", "subtitle": "ออนไลน์" },
     "durationSec": 6,
     "messages": [
@@ -19,6 +20,7 @@
   },
   {
     "type": "chat",
+    "skin": "ig",
     "title": "ภาค 2",
     "transition": { "type": "slide", "direction": "from-right" },
     "durationSec": 5,
@@ -30,6 +32,7 @@
   },
   {
     "type": "chat",
+    "skin": "messenger",
     "title": "แชทยาว (ทดสอบ scroll)",
     "transition": { "type": "wipe", "direction": "from-bottom" },
     "durationSec": 10,

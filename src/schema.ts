@@ -1,3 +1,5 @@
+import type { SkinName } from "./skins";
+
 export const FPS = 30;
 export const WIDTH = 1080; // YouTube Short vertical
 export const HEIGHT = 1920;
@@ -41,6 +43,7 @@ export type ChatScene = SceneBase & {
   title?: string;
   header?: ChatHeader;
   messages: Message[];
+  skin?: SkinName; // #7 look; omit = whatsapp
 };
 
 // #6 intro hook / outro card. Same shape for both — full-screen centered text.

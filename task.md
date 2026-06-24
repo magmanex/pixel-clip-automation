@@ -20,7 +20,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done
 ## P1 — variety so videos aren't samey
 - [x] #5 Transitions between scenes (fade/slide/wipe/cut, per-scene, default fade)
 - [x] #6 Intro hook + outro card (type "card": emoji/title/subtitle/cta)
-- [ ] #7 Chat skins (LINE / IG / Messenger looks)
+- [x] #7 Chat skins (LINE / IG / Messenger looks) — `skin` field on chat scene, palettes in `src/skins.ts`
 
 ## P2 — scene types from original vision
 - [ ] #8 Split left/right scene
