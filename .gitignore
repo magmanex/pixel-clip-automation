@@ -2,6 +2,9 @@ node_modules/
 out/
 .remotion/
 
+# rendered video — never commit MP4s (renders live in out/, regenerate with npm run render)
+*.mp4
+
 # gen-char raw drafts (pre-quantize) + bg-cutout intermediates
 pipeline/_raw-*.png
 pipeline/_cut-*.png

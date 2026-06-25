@@ -107,6 +107,26 @@ what unblocks the next thing. ComfyUI lives on jef — restart cmd in PIPELINE.m
   (run #A3d cleanup first), then re-render `clips/story.json` + `clips/borrow.json` to prove
   the Until Then look end-to-end. This is the "done" signal for P2.5.
 
+### Animation + direction (added for craft/impact)
+- [x] Multi-frame sprites — `characters.json` emotion can be a `string[]` of frames;
+  `spriteFramesFor()` + `<PixelSprite>` (`src/anim.ts` cycler, `--selftest`) cycle them.
+  Single string = static (back-compat). Wired into StoryScene actors.
+- [x] Procedural tears — `cry: true` on a story actor → animated falling droplets
+  (`Tear` in StoryScene, no art = never garbles). Used in `clips/mae-luuk.json` ending.
+- [x] `director` skill — pacing/beat/transition-grammar pass on a drafted JSON
+  (`.claude/skills/director/`). Tunes timing only, not story.
+- [x] `story-to-scenes` skill + readable track `name`s (see #11 below).
+- [x] First full clip — `clips/mae-luuk.json` (drama: นางพยาบาล+แม่). Two NEW
+  IP-Adapter characters `nurse`/`mae` generated (presets in `pipeline/prompts.json`,
+  registered in `characters.json` with neutral/sad/+), identity pinned via
+  `--ref=<neutral>` (`--ref-weight=0.9` fixed a male-drift on mae-sad). Procedural
+  emotion cues (don't lean on tiny pixel faces): tears (`cry`), shock screen-shake,
+  idle breathing on all actors. Rendered `out/mae-luuk.mp4` (63s). Sprites are DRAFTS
+  (#A3d cleanup still pending for final polish).
+- [ ] Gen'd animation frames — multi-frame system ready; coherent gen'd frame-loops
+  still need seed curation + IP-Adapter or they jitter. Procedural motion covers the
+  common cases for now.
+
 ## P3 — scale / workflow
 - [x] #10 Batch render multiple clips — drop a JSON in `clips/`, get a `Clip-<name>` composition; `npm run render:all` renders every clip to `out/<name>.mp4`
 - [~] #11 Editor GUI
@@ -117,29 +137,47 @@ what unblocks the next thing. ComfyUI lives on jef — restart cmd in PIPELINE.m
     back to the file (`@remotion/studio` writeStaticFile). Studio-only (no leak in render).
     See `src/EditLayer.tsx`.
   - [x] Clip props form: batch clips keep the Zod schema form for live tweaks.
-  - [ ] Full drag-drop timeline GUI (reorder/add/delete scenes, edit cards/splits) —
-    still YAGNI; current double-click + JSON covers editing.
+  - [x] Readable timeline tracks — optional `name` on every scene (schema) → shown as
+    the `TransitionSeries.Sequence name` in the Studio timeline + Scene List panel via
+    `src/sceneLabel.ts` (falls back to derived content, so tracks are never `<TS.Sequence>`).
+  - [x] `story-to-scenes` skill — user narrates place/characters/events → schema-valid
+    scenes JSON with a readable `name` per scene, validated by `npm run check`.
+    `.claude/skills/story-to-scenes/`; `name` field documented in PROMPT.md.
+  - [x] Editor Phase 1 — Studio-only Scene List panel (`src/SceneList.tsx`, mounted in
+    `EditableShort`): ☰ button top-right → reorder (↑/↓), duplicate (⧉), delete (✕),
+    edit `durationSec` inline. Writes whole `public/scenes.json` via `writeStaticFile`,
+    gated by `isRendering` so nothing ships in the MP4. This is the "rearrange tracks"
+    pain point (Remotion's own timeline is read-only).
+  - [ ] Editor Phase 2 — Scene Inspector: click a scene → edit ALL fields (transition,
+    skin, background, actor pos/emotion/x/y/scale/blur, add/del actor + dialogue line).
+  - [~] Editor Phase 3 — canvas drag. DONE: drag a story actor on the Studio canvas to
+    set its x/y (`src/DragLayer.tsx` + pure coord math `src/dragMath.ts` w/ `--selftest`;
+    StoryScene actors carry `data-drag-*`, mounted in `EditableShort`). Works on `Short`
+    (scenes.json) story scenes only — file-backed comp. TODO: scale handle + per-actor
+    `appearAt` field + timeline strip for appear-timing.
 
 ## P4 — last mile: idea → uploaded Short (this is what "complete" means)
 Render + edit are done. Framework is NOT complete until a finished clip reaches
 YouTube without manual fiddling. Priority order = biggest velocity win first.
 
-- [ ] #12 Thumbnail per clip — YouTube needs a custom thumb. Add `npm run thumb`:
-  `remotion still Short out/thumb.png --frame=N` (N = hook frame). One line in
-  package.json; optional `thumbFrame` field on first scene to pick the frame.
-- [ ] #13 Metadata sidecar — title/description/tags/hashtags belong in the data, not
-  in someone's head. Add optional `meta` block to scenes.json (or a sibling
-  `<name>.meta.json` per batch clip); render writes it next to the mp4 so upload
-  has everything.
+- [x] #12 Thumbnail per clip — `npm run thumb` (`remotion still Short out/thumb.png
+  --frame=${THUMB_FRAME:-30}`); override frame with `THUMB_FRAME=N npm run thumb`.
+- [x] #13 Metadata sidecar — `metaSchema` in schema.ts; sidecar `<name>.meta.json`
+  (active video = `public/scenes.meta.json`). `npm run meta -- <name>` validates it
+  through the schema and writes `out/<name>.meta.json` beside the mp4. Has `--selftest`.
 - [ ] #14 YouTube upload script — `npm run publish -- <name>`: upload mp4 + thumb +
-  meta via YouTube Data API (OAuth, resumable upload). The actual 10k-subs goal
-  lives or dies here; everything above is plumbing for this step.
-- [ ] #15 One-shot pipeline — `npm run ship -- <name>` = validate → render → thumb →
-  publish. Glue script over #12–14, fail fast on any step.
+  meta via YouTube Data API (OAuth, resumable upload). **BLOCKED on YOUR Google
+  OAuth** (Cloud project + token) — can't be built/tested without creds. `ship.mjs`
+  already hands off to `scripts/publish.mjs` if it exists. This is the 10k-subs step.
+- [~] #15 One-shot pipeline — `npm run ship -- <name>` = validate → render → thumb →
+  meta → publish. `scripts/ship.mjs` DONE for the first four steps (verified end-to-end
+  on the active video: 900-frame mp4 + thumb + meta). Publish step waits on #14.
 
 ## P5 — quality / polish (do only if output quality demands it)
-- [ ] #16 `npm run check` = `tsc --noEmit` + load scenes.json through the zod schema,
-  so a bad/AI-generated JSON fails loud before a 2-min render, not mid-render.
+- [x] #16 `npm run check` = `tsc --noEmit` + `scripts/check.mjs` runs the SAME zod
+  schema over `public/scenes.json` + every `clips/*.json` (Node `--experimental-strip-types`
+  loads schema.ts directly, no new dep). Bad/AI JSON fails loud before a 2-min render.
+  Has `--selftest`.
 - [ ] #17 BGM ducking — drop music volume while an SFX plays (mix clarity). YAGNI
   until a real video sounds muddy; Remotion `<Audio volume={f => ...}>` covers it.
 - [ ] #18 Safe-area guides — Studio-only overlay marking YouTube's UI-occluded zones

@@ -7,5 +7,13 @@
   "tao": {
     "prompt": "thai teenage boy, short black hair, round glasses, green t-shirt, brown shorts",
     "negative": "girl, female, long hair"
+  },
+  "nurse": {
+    "prompt": "thai young woman nurse, white nurse uniform, dark hair tied in a bun, tired gentle face",
+    "negative": "child, old woman, man"
+  },
+  "mae": {
+    "prompt": "thai elderly woman, gray hair in a bun, floral blouse, kind wrinkled face",
+    "negative": "young, child, man"
   }
 }

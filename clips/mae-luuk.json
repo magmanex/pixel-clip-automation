@@ -1,0 +1,134 @@
+[
+  {
+    "type": "card",
+    "name": "ฉากเปิด: สายที่ไม่ได้รับ",
+    "durationSec": 3.5,
+    "background": "#0c0e14",
+    "emoji": "📱",
+    "title": "สายที่ไม่ได้รับ",
+    "subtitle": "เรื่องของแม่ กับลูกสาวที่อยู่ไกล"
+  },
+  {
+    "type": "story",
+    "name": "ฉาก: แม่อยู่บ้านคนเดียว คิดถึงลูก",
+    "durationSec": 8,
+    "transition": { "type": "fade", "durationSec": 1 },
+    "bgImage": "bg/park.png",
+    "characters": [
+      { "characterId": "mae", "emotion": "neutral", "pos": "center" }
+    ],
+    "dialogue": [
+      { "text": "ที่บ้านต่างจังหวัด แม่อยู่คนเดียวมานานแล้ว", "delaySec": 0.5, "holdSec": 2 },
+      { "characterId": "mae", "text": "มะลิคงยุ่งอยู่สินะ... เป็นพยาบาลมันเหนื่อย", "emotion": "happy", "holdSec": 1.5 },
+      { "characterId": "mae", "text": "ไม่เป็นไร เดี๋ยวมันก็โทรมาหาแม่เอง", "emotion": "neutral", "holdSec": 3 }
+    ]
+  },
+  {
+    "type": "overlay",
+    "name": "แชท: แม่ทักมา ลูกตอบสั้นๆ",
+    "durationSec": 6.5,
+    "transition": { "type": "fade", "durationSec": 1 },
+    "skin": "line",
+    "media": { "src": "bg/rooftop-dusk.png", "kind": "image" },
+    "header": { "name": "แม่ 💚", "subtitle": "มือถือ" },
+    "messages": [
+      { "side": "left", "name": "แม่", "text": "กินข้าวยังลูก" },
+      { "side": "left", "name": "แม่", "text": "วันนี้แม่ทำแกงส้มที่หนูชอบด้วยนะ", "delaySec": 0.5 },
+      { "side": "right", "name": "มะลิ", "text": "ยังไม่ว่างเลยแม่ คนไข้เยอะ เดี๋ยวคุยนะ", "characterId": "nurse", "emotion": "neutral", "delaySec": 2.5, "typingSec": 1.5 }
+    ]
+  },
+  {
+    "type": "story",
+    "name": "ฉาก: ลูกทำงานหนักที่โรงพยาบาล (depth-of-field)",
+    "durationSec": 8.5,
+    "transition": { "type": "fade", "durationSec": 1 },
+    "bgImage": "bg/rooftop-dusk.png",
+    "characters": [
+      { "characterId": "mae", "emotion": "sad", "pos": "left", "blur": 5, "scale": 1.25, "x": -40, "y": -30 },
+      { "characterId": "nurse", "emotion": "sad", "pos": "center", "scale": 1.05 }
+    ],
+    "dialogue": [
+      { "text": "ที่โรงพยาบาลในเมืองกรุง มะลิดูแลคนไข้ทั้งวันทั้งคืน", "delaySec": 0.5, "holdSec": 2 },
+      { "characterId": "nurse", "text": "พักนี้เหนื่อยจัง... แต่คนไข้รอเราอยู่", "emotion": "sad", "holdSec": 2 },
+      { "characterId": "nurse", "text": "เดี๋ยวว่างแล้วค่อยโทรหาแม่นะ... เดี๋ยวก่อน", "emotion": "neutral", "holdSec": 2.5 }
+    ]
+  },
+  {
+    "type": "chat",
+    "name": "แชท: แม่ส่งมาหลายครั้ง ลูกไม่ได้ตอบ",
+    "durationSec": 9,
+    "transition": { "type": "fade", "durationSec": 1 },
+    "skin": "messenger",
+    "header": { "name": "แม่ 💚", "subtitle": "ใช้งานล่าสุด 3 ชม.ที่แล้ว" },
+    "messages": [
+      { "side": "left", "name": "แม่", "text": "ลูกถึงบ้านหรือยัง" },
+      { "side": "left", "name": "แม่", "text": "แม่ทำกับข้าวเผื่อไว้นะ เผื่อหนูกลับมา", "delaySec": 1 },
+      { "side": "left", "name": "แม่", "text": "ไม่ต้องห่วงแม่ ดูแลตัวเองดีๆ", "delaySec": 1.5 },
+      { "side": "left", "name": "แม่", "text": "รักนะลูก", "delaySec": 2, "sfx": null }
+    ]
+  },
+  {
+    "type": "split",
+    "name": "ฉากคู่: ลูกยุ่ง vs แม่นั่งรอ",
+    "durationSec": 4.5,
+    "transition": { "type": "slide", "direction": "from-bottom", "durationSec": 0.5 },
+    "direction": "horizontal",
+    "panels": [
+      { "characterId": "nurse", "emotion": "sad", "background": "#16202e", "title": "มะลิ", "subtitle": "ยุ่งทั้งวันทั้งคืน" },
+      { "characterId": "mae", "emotion": "sad", "background": "#2e2316", "title": "แม่", "subtitle": "รออยู่คนเดียว" }
+    ]
+  },
+  {
+    "type": "story",
+    "name": "ฉาก: สายกลางดึก ข่าวร้าย (จุด peak — hard cut)",
+    "durationSec": 9,
+    "transition": { "type": "cut" },
+    "background": "#0a0a12",
+    "characters": [
+      { "characterId": "nurse", "emotion": "neutral", "pos": "center", "scale": 1.1 }
+    ],
+    "dialogue": [
+      { "characterId": "nurse", "text": "ฮัลโหล... ใครน่ะ ตีสามแล้วนะ", "emotion": "neutral", "holdSec": 1 },
+      { "name": "เสียงปลายสาย", "text": "คุณมะลิใช่ไหมคะ... เรื่องคุณแม่ของคุณ", "delaySec": 1.2, "holdSec": 1.5 },
+      { "characterId": "nurse", "text": "แม่... แม่เป็นอะไรคะ!?", "emotion": "shock", "sfx": "pop.mp3", "delaySec": 0.5, "holdSec": 4 }
+    ]
+  },
+  {
+    "type": "chat",
+    "name": "แชท: ข้อความสุดท้ายที่ไม่มีคนอ่าน",
+    "durationSec": 9,
+    "transition": { "type": "fade", "durationSec": 1.2 },
+    "skin": "ig",
+    "header": { "name": "แม่ 💚", "subtitle": "ไม่มีการตอบกลับ" },
+    "messages": [
+      { "side": "right", "name": "มะลิ", "text": "แม่ หนูกลับบ้านแล้วนะ", "characterId": "nurse", "emotion": "sad" },
+      { "side": "right", "name": "มะลิ", "text": "หนูขอโทษที่ไม่ค่อยมีเวลาให้แม่เลย", "characterId": "nurse", "emotion": "sad", "delaySec": 2.5 },
+      { "side": "right", "name": "มะลิ", "text": "แม่ตื่นมาคุยกับหนูหน่อยสิ...", "characterId": "nurse", "emotion": "sad", "delaySec": 3, "sfx": null }
+    ]
+  },
+  {
+    "type": "story",
+    "name": "ฉาก: น้ำตาลูกสาว (เงาสะท้อนบนจอ — hold ยาวสุด)",
+    "durationSec": 8,
+    "transition": { "type": "fade", "durationSec": 1.2 },
+    "background": "#08080d",
+    "characters": [
+      { "characterId": "nurse", "emotion": "sad", "pos": "center", "scale": 1.6, "y": 40, "cry": true }
+    ],
+    "dialogue": [
+      { "text": "บนหน้าจอมือถือที่มืดลง สะท้อนใบหน้าที่กำลังร้องไห้", "delaySec": 0.5, "holdSec": 2 },
+      { "characterId": "nurse", "text": "แม่... หนูคิดถึงแม่จัง", "emotion": "sad", "delaySec": 0.5, "holdSec": 4.5 }
+    ]
+  },
+  {
+    "type": "card",
+    "name": "ฉากจบ: โทรหาคนที่บ้านบ้างนะ",
+    "durationSec": 5,
+    "transition": { "type": "fade", "durationSec": 1 },
+    "background": "#0c0e14",
+    "emoji": "💧",
+    "title": "โทรหาคนที่บ้านบ้างนะ",
+    "subtitle": "ก่อนที่จะไม่มีโอกาสได้โทร",
+    "cta": "กดติดตาม • เรื่องเล่าที่ทำให้คิดถึงครอบครัว"
+  }
+]

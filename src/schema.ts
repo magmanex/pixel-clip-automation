@@ -44,7 +44,10 @@ export const mediaSchema = z.object({
 
 export const skinNameSchema = z.enum(["whatsapp", "line", "ig", "messenger"]); // #7
 
-const baseFields = { durationSec: z.number(), transition: transitionSchema.optional() };
+// `name` is a human label shown as the scene's track name in the Studio timeline
+// (and the Scene List panel). The story-to-scenes skill fills it so tracks read like
+// "ฉากเปิด: ตึกตอนเย็น" instead of "<TS.Sequence>". Falls back to derived content.
+const baseFields = { durationSec: z.number(), transition: transitionSchema.optional(), name: z.string().optional() };
 
 const chatFields = {
   ...baseFields,
@@ -99,6 +102,7 @@ export const actorSchema = z.object({
   scale: z.number().optional(),
   x: z.number().optional(),
   y: z.number().optional(),
+  cry: z.boolean().optional(), // animated tears fall from the face (procedural, no art needed)
 });
 export const dialogueLineSchema = z.object({
   characterId: z.string().optional(), // who speaks → name label + emotion swap + highlight
@@ -128,6 +132,19 @@ export const sceneSchema = z.discriminatedUnion("type", [
 
 // Props of the Short composition — the root the Studio form edits.
 export const shortSchema = z.object({ scenes: z.array(sceneSchema) });
+
+// #13 Publish metadata sidecar — title/description/tags live in the data, not in
+// someone's head. Sits beside the scenes as `<name>.meta.json`; `npm run meta`
+// validates it through this schema and copies it next to the rendered mp4 so the
+// upload step (#14) has everything. Only `title` is required (YouTube needs it).
+export const metaSchema = z.object({
+  title: z.string().min(1).max(100), // YouTube hard limit
+  description: z.string().max(5000).optional(),
+  tags: z.array(z.string()).optional(),
+  hashtags: z.array(z.string()).optional(), // appended to description as #tags
+  thumbFrame: z.number().optional(), // frame for `npm run thumb`
+});
+export type Meta = z.infer<typeof metaSchema>;
 
 export type Message = z.infer<typeof messageSchema>;
 export type ChatHeader = z.infer<typeof chatHeaderSchema>;
