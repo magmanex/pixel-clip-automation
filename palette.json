@@ -1,0 +1,19 @@
+{
+  "_note": "Master palette — limited, hand-picked from the Until Then-style reference. Every generated sprite is quantized to THESE colors (#A3c step 3) to kill off-palette AI noise. Keep it tight: add a color only when a new asset genuinely needs it.",
+  "outline": ["#1b1b26", "#2c2c3a"],
+  "skin":    ["#f3cda3", "#dcab7f", "#bd8657", "#8f5e38"],
+  "hairBrown": ["#7a5235", "#523622", "#2f2419"],
+  "hairBlack": ["#2a2a33", "#181820"],
+  "denim":   ["#7d99b3", "#4d6e8e", "#324c66"],
+  "olive":   ["#7a7f4a", "#565b32", "#3a3e22"],
+  "mustard": ["#e7cd66", "#d4ad3a", "#a07d22"],
+  "white":   ["#eef1ef", "#c6cecb", "#9aa3a1"],
+  "grey":    ["#aab0b4", "#7f868a", "#565c60"],
+  "purple":  ["#8a64b0", "#6a4a8a", "#4a3266"],
+  "teal":    ["#37b3a3", "#1f8377"],
+  "magenta": ["#e6517f", "#b83a60"],
+  "glass":   ["#d2e6ee", "#aacfdf", "#7fb0c6"],
+  "floor":   ["#c8ced2", "#a3abb1", "#7d858b"],
+  "haze":    ["#e2eaee"],
+  "black":   ["#101018"]
+}

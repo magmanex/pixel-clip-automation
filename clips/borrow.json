@@ -1,0 +1,35 @@
+[
+  {
+    "type": "card",
+    "durationSec": 2,
+    "emoji": "🙏",
+    "title": "ยืมเงินหน่อย",
+    "subtitle": "เรื่องจริงของทุกมิตรภาพ",
+    "background": "#0f172a"
+  },
+  {
+    "type": "chat",
+    "durationSec": 16,
+    "skin": "line",
+    "transition": { "type": "slide", "direction": "from-right" },
+    "header": { "name": "เต่า 🐢", "characterId": "tao", "subtitle": "online" },
+    "messages": [
+      { "side": "left", "text": "เพื่อน ยืมเงินหน่อยดิ", "characterId": "tao", "emotion": "neutral" },
+      { "side": "right", "text": "เท่าไหร่", "characterId": "mali", "emotion": "neutral", "delaySec": 0.4 },
+      { "side": "left", "text": "5,000 พอ 😄", "characterId": "tao", "emotion": "happy", "delaySec": 0.5 },
+      { "side": "right", "text": "ห๊ะ!?", "characterId": "mali", "emotion": "shock", "delaySec": 0.3, "typingSec": 0.4 },
+      { "side": "left", "text": "เดือนหน้าคืน สัญญาาา", "characterId": "tao", "emotion": "sad", "delaySec": 0.6 },
+      { "side": "right", "text": "เดือนที่แล้วก็พูดงี้", "characterId": "mali", "emotion": "angry", "delaySec": 0.5 },
+      { "side": "left", "text": "อ่าว จำได้ด้วย", "characterId": "tao", "emotion": "shock", "delaySec": 0.5 }
+    ]
+  },
+  {
+    "type": "card",
+    "durationSec": 2.5,
+    "emoji": "💸",
+    "title": "เพื่อนแบบนี้ มีไหม",
+    "subtitle": "คอมเมนต์ชื่อมันเลย",
+    "cta": "กดติดตาม",
+    "background": "#1e293b"
+  }
+]

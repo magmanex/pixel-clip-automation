@@ -8,6 +8,7 @@ import { wipe } from "@remotion/transitions/wipe";
 import { ChatScene } from "./ChatScene";
 import { CardScene } from "./CardScene";
 import { SplitScene } from "./SplitScene";
+import { StoryScene } from "./StoryScene";
 import { EditProvider } from "./EditLayer";
 import { Scene, Transition, sceneFrames, sceneTransition, transitionFrames } from "./schema";
 import { BGM_FILE, BGM_VOLUME } from "./config";
@@ -45,6 +46,8 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
                   <CardScene scene={scene} />
                 ) : scene.type === "split" ? (
                   <SplitScene scene={scene} />
+                ) : scene.type === "story" ? (
+                  <StoryScene scene={scene} />
                 ) : (
                   <ChatScene scene={scene} sceneIndex={i} />
                 )}

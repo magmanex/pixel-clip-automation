@@ -16,12 +16,17 @@ export const messageSchema = z.object({
   // #4 timing (sec): delaySec = pause before typing (beat); typingSec = "..." length.
   delaySec: z.number().optional(),
   typingSec: z.number().optional(),
+  // #A2/#A4 pixel-art speaker: characterId resolves to a sprite (characters.json);
+  // emotion picks the variant so the character reacts as the beat lands.
+  characterId: z.string().optional(),
+  emotion: z.string().optional(),
 });
 
 export const chatHeaderSchema = z.object({
   name: z.string(),
   avatar: z.string().optional(), // image in public/; omit = initial circle
   subtitle: z.string().optional(),
+  characterId: z.string().optional(), // #A2 resolve avatar from characters.json instead
 });
 
 // #5 transition entering this scene. First scene's is ignored. "cut" = hard cut.
@@ -67,6 +72,8 @@ export const cardSceneSchema = z.object({
 export const splitPanelSchema = z.object({
   background: z.string().optional(),
   image: z.string().optional(),
+  characterId: z.string().optional(), // #A2 resolve panel image from characters.json
+  emotion: z.string().optional(),
   emoji: z.string().optional(),
   title: z.string().optional(),
   subtitle: z.string().optional(),
@@ -78,11 +85,45 @@ export const splitSceneSchema = z.object({
   panels: z.tuple([splitPanelSchema, splitPanelSchema]),
 });
 
+// #A5 "story" scene — Until Then style: pixel characters standing in a scene with a
+// visual-novel dialogue box at the bottom, advancing one line at a time. The speaking
+// character swaps to the line's emotion; others dim.
+export const actorSchema = z.object({
+  characterId: z.string(),
+  emotion: z.string().optional(), // resting emotion; a dialogue line can override it
+  pos: z.enum(["left", "center", "right"]).optional(), // default center
+  flip: z.boolean().optional(), // mirror horizontally (face the other actor)
+  // depth-of-field staging (Until Then look): blur = px of foreground/background blur,
+  // scale = size multiplier (>1 = closer/foreground), x/y = manual offset in px.
+  blur: z.number().optional(),
+  scale: z.number().optional(),
+  x: z.number().optional(),
+  y: z.number().optional(),
+});
+export const dialogueLineSchema = z.object({
+  characterId: z.string().optional(), // who speaks → name label + emotion swap + highlight
+  name: z.string().optional(), // override the speaker label (e.g. narrator)
+  text: z.string(),
+  emotion: z.string().optional(), // speaker's emotion for this line
+  delaySec: z.number().optional(), // beat before the line starts
+  holdSec: z.number().optional(), // read time after the text finishes typing
+  sfx: z.string().nullable().optional(), // public/sfx/ file when the line lands
+});
+export const storySceneSchema = z.object({
+  type: z.literal("story"),
+  ...baseFields,
+  background: z.string().optional(), // CSS color
+  bgImage: z.string().optional(), // public/ image path (fills, behind characters)
+  characters: z.array(actorSchema),
+  dialogue: z.array(dialogueLineSchema),
+});
+
 export const sceneSchema = z.discriminatedUnion("type", [
   chatSceneSchema,
   overlaySceneSchema,
   cardSceneSchema,
   splitSceneSchema,
+  storySceneSchema,
 ]);
 
 // Props of the Short composition — the root the Studio form edits.
@@ -97,6 +138,9 @@ export type ChatScene = z.infer<typeof chatSceneSchema> | z.infer<typeof overlay
 export type CardScene = z.infer<typeof cardSceneSchema>;
 export type SplitPanel = z.infer<typeof splitPanelSchema>;
 export type SplitScene = z.infer<typeof splitSceneSchema>;
+export type Actor = z.infer<typeof actorSchema>;
+export type DialogueLine = z.infer<typeof dialogueLineSchema>;
+export type StoryScene = z.infer<typeof storySceneSchema>;
 export type Scene = z.infer<typeof sceneSchema>;
 
 export const DEFAULT_TRANSITION: Transition = { type: "fade" };

@@ -1,0 +1,22 @@
+{
+  "mali": {
+    "name": "มะลิ",
+    "sprites": {
+      "neutral": "characters/mali-neutral.png",
+      "happy": "characters/mali-happy.png",
+      "angry": "characters/mali-angry.svg",
+      "sad": "characters/mali-sad.png",
+      "shock": "characters/mali-shock.svg"
+    }
+  },
+  "tao": {
+    "name": "เต่า",
+    "sprites": {
+      "neutral": "characters/tao-neutral.png",
+      "happy": "characters/tao-happy.svg",
+      "angry": "characters/tao-angry.svg",
+      "sad": "characters/tao-sad.png",
+      "shock": "characters/tao-shock.svg"
+    }
+  }
+}

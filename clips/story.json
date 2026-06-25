@@ -1,0 +1,21 @@
+[
+  {
+    "type": "story",
+    "durationSec": 14,
+    "background": "#28324a",
+    "characters": [
+      { "characterId": "tao", "pos": "left", "blur": 7, "scale": 1.7, "x": -120, "y": -60 },
+      { "characterId": "mali", "pos": "left", "emotion": "neutral", "x": 60 },
+      { "characterId": "tao", "pos": "right", "emotion": "neutral", "flip": true, "x": -40 },
+      { "characterId": "mali", "pos": "right", "blur": 9, "scale": 1.9, "x": 200, "y": -80, "flip": true }
+    ],
+    "dialogue": [
+      { "characterId": "tao", "emotion": "neutral", "text": "นี่... มะลิ มีอะไรจะบอก" },
+      { "characterId": "mali", "emotion": "shock", "text": "ห๊ะ อะไรเหรอ", "delaySec": 0.3 },
+      { "characterId": "tao", "emotion": "sad", "text": "พรุ่งนี้เราย้ายบ้านแล้ว", "delaySec": 0.3 },
+      { "characterId": "mali", "emotion": "sad", "text": "...จริงเหรอ", "delaySec": 0.4 },
+      { "characterId": "tao", "emotion": "happy", "text": "ล้อเล่น! สุขสันต์วันเกิดงัย 🎉", "delaySec": 0.3 },
+      { "characterId": "mali", "emotion": "angry", "text": "เต่าาาา!!", "delaySec": 0.2 }
+    ]
+  }
+]

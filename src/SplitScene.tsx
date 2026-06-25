@@ -1,5 +1,6 @@
 import { AbsoluteFill, Img, staticFile, useCurrentFrame, useVideoConfig, spring } from "remotion";
 import { SplitScene as SplitSceneData, SplitPanel } from "./schema";
+import { spriteFor } from "./characters";
 
 // #8 Two-panel split. Each panel slides in from its outer edge, then holds.
 const Panel: React.FC<{ panel: SplitPanel; from: "left" | "right" | "top" | "bottom" }> = ({ panel, from }) => {
@@ -30,8 +31,8 @@ const Panel: React.FC<{ panel: SplitPanel; from: "left" | "right" | "top" | "bot
         overflow: "hidden",
       }}
     >
-      {panel.image && (
-        <Img src={staticFile(panel.image)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+      {(panel.image ?? spriteFor(panel.characterId, panel.emotion)) && (
+        <Img src={staticFile(panel.image ?? spriteFor(panel.characterId, panel.emotion)!)} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", imageRendering: panel.characterId ? "pixelated" : undefined }} />
       )}
       {panel.emoji && <div style={{ fontSize: 140, position: "relative" }}>{panel.emoji}</div>}
       {panel.title && <div style={{ color: "#fff", fontSize: 64, fontWeight: 800, lineHeight: 1.2, position: "relative", textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}>{panel.title}</div>}
