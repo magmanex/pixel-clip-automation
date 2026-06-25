@@ -17,7 +17,7 @@ import { writeStaticFile } from "@remotion/studio";
 // Disabled during the actual headless render (isRendering), so nothing ships in
 // the MP4. src = path under public/ (e.g. "scenes.json").
 
-type EditReq = { sceneIndex: number; msgIndex: number; text: string };
+type EditReq = { sceneIndex: number; msgIndex: number; text: string; side: "left" | "right" };
 
 export const EditProvider: React.FC<{ src?: string; children: ReactNode }> = ({ src, children }) => {
   const [req, setReq] = useState<EditReq | null>(null);
@@ -36,20 +36,36 @@ export const EditProvider: React.FC<{ src?: string; children: ReactNode }> = ({ 
       e.preventDefault();
       e.stopPropagation();
       const text = hit.dataset.editText ?? "";
-      setReq({ sceneIndex: Number(hit.dataset.editScene), msgIndex: Number(hit.dataset.editMsg), text });
+      const side = hit.dataset.editSide === "right" ? "right" : "left";
+      setReq({ sceneIndex: Number(hit.dataset.editScene), msgIndex: Number(hit.dataset.editMsg), text, side });
       setDraft(text);
     };
     window.addEventListener("dblclick", onDbl, true);
     return () => window.removeEventListener("dblclick", onDbl, true);
   }, [active]);
 
-  const save = async () => {
+  // All edits round-trip the file: fetch → mutate this scene's messages → write back.
+  // close=true dismisses the modal (use it for ops that shift indices: move/add/delete).
+  const apply = async (fn: (msgs: Record<string, unknown>[]) => void, close = true) => {
     if (!req || !src) return;
     const data = await fetch(staticFile(src)).then((r) => r.json());
-    data[req.sceneIndex].messages[req.msgIndex].text = draft;
+    fn(data[req.sceneIndex].messages);
     await writeStaticFile({ filePath: src, contents: JSON.stringify(data, null, 2) });
-    setReq(null);
+    if (close) setReq(null);
   };
+
+  const save = () => apply((m) => { m[req!.msgIndex].text = draft; });
+  const move = (dir: -1 | 1) =>
+    apply((m) => {
+      const j = req!.msgIndex + dir;
+      if (j < 0 || j >= m.length) return;
+      [m[req!.msgIndex], m[j]] = [m[j], m[req!.msgIndex]];
+    });
+  const addAfter = () => apply((m) => { m.splice(req!.msgIndex + 1, 0, { side: req!.side, text: "ข้อความใหม่" }); });
+  const del = () => apply((m) => { m.splice(req!.msgIndex, 1); });
+  const flipSide = () =>
+    apply((m) => { m[req!.msgIndex].side = req!.side === "left" ? "right" : "left"; }, false)
+      .then(() => setReq((r) => (r ? { ...r, side: r.side === "left" ? "right" : "left" } : r)));
 
   return (
     <>
@@ -67,6 +83,14 @@ export const EditProvider: React.FC<{ src?: string; children: ReactNode }> = ({ 
                 onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) save(); if (e.key === "Escape") setReq(null); }}
                 style={{ fontSize: 22, padding: 12, borderRadius: 8, border: "2px solid #ccc", color: "#111", fontFamily: "sans-serif", resize: "vertical" }}
               />
+              {/* message-level ops (reorder / add / delete / which side) */}
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <button onClick={() => move(-1)} style={btn("#444")}>↑ เลื่อนขึ้น</button>
+                <button onClick={() => move(1)} style={btn("#444")}>↓ เลื่อนลง</button>
+                <button onClick={addAfter} style={btn("#2a6")}>＋ เพิ่มหลังนี้</button>
+                <button onClick={flipSide} style={btn("#36c")}>↔ ฝั่ง: {req.side === "right" ? "ขวา" : "ซ้าย"}</button>
+                <button onClick={del} style={btn("#c33")}>✕ ลบ</button>
+              </div>
               <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
                 <button onClick={() => setReq(null)} style={btn("#888")}>ยกเลิก</button>
                 <button onClick={save} style={btn("#005c4b")}>บันทึก (⌘↵)</button>

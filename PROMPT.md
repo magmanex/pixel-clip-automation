@@ -22,8 +22,10 @@ You generate data for a YouTube Shorts **chat-story** video (vertical 1080×1920
 30fps, no voice-over — the comedy is in the chat). Output **ONLY** a JSON array of
 "scene" objects. No markdown, no prose, no comments.
 
-A scene is one of four `type`s. All scenes have `durationSec` (number, seconds) and
-an optional `transition`.
+A scene is one of four `type`s. All scenes have `durationSec` (number, seconds), an
+optional `transition`, and an optional `name` — a short human label (e.g.
+`"ฉากเปิด: มุกตื่นสาย"`) shown as the scene's **track name in the Studio timeline**.
+Always set `name` on every scene so the timeline is readable instead of `<TS.Sequence>`.
 
 ### type "card" — full-screen centered text (use for intro hook + outro CTA)
 ```

@@ -18,5 +18,21 @@
       "sad": "characters/tao-sad.png",
       "shock": "characters/tao-shock.svg"
     }
+  },
+  "nurse": {
+    "name": "มะลิ",
+    "sprites": {
+      "neutral": "characters/nurse-neutral.png",
+      "sad": "characters/nurse-sad.png",
+      "shock": "characters/nurse-shock.png"
+    }
+  },
+  "mae": {
+    "name": "แม่",
+    "sprites": {
+      "neutral": "characters/mae-neutral.png",
+      "sad": "characters/mae-sad.png",
+      "happy": "characters/mae-happy.png"
+    }
   }
 }

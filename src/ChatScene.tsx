@@ -118,6 +118,7 @@ export const ChatScene: React.FC<{ scene: ChatSceneData; sceneIndex?: number }> 
               data-edit-scene={sceneIndex !== undefined && !typing ? sceneIndex : undefined}
               data-edit-msg={sceneIndex !== undefined && !typing ? i : undefined}
               data-edit-text={sceneIndex !== undefined && !typing ? m.text : undefined}
+              data-edit-side={sceneIndex !== undefined && !typing ? m.side : undefined}
               style={{
                 alignSelf: isRight ? "flex-end" : "flex-start",
                 maxWidth: "75%",

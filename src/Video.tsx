@@ -10,7 +10,10 @@ import { CardScene } from "./CardScene";
 import { SplitScene } from "./SplitScene";
 import { StoryScene } from "./StoryScene";
 import { EditProvider } from "./EditLayer";
+import { SceneList } from "./SceneList";
+import { DragLayer } from "./DragLayer";
 import { Scene, Transition, sceneFrames, sceneTransition, transitionFrames } from "./schema";
+import { sceneTrackName } from "./sceneLabel";
 import { BGM_FILE, BGM_VOLUME } from "./config";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +32,7 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: "#0b141a" }}>
       {BGM_FILE && <Audio src={staticFile(BGM_FILE)} volume={BGM_VOLUME} loop />}
-      <TransitionSeries>
+      <TransitionSeries from={-19}>
         {scenes.map((scene, i) => {
           const t = sceneTransition(scene, i);
           const frames = transitionFrames(t);
@@ -41,13 +44,13 @@ export const Short: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
                   timing={linearTiming({ durationInFrames: frames })}
                 />
               )}
-              <TransitionSeries.Sequence durationInFrames={sceneFrames(scene)}>
+              <TransitionSeries.Sequence durationInFrames={sceneFrames(scene)} name={sceneTrackName(scene, i)}>
                 {scene.type === "card" ? (
                   <CardScene scene={scene} />
                 ) : scene.type === "split" ? (
                   <SplitScene scene={scene} />
                 ) : scene.type === "story" ? (
-                  <StoryScene scene={scene} />
+                  <StoryScene scene={scene} sceneIndex={i} />
                 ) : (
                   <ChatScene scene={scene} sceneIndex={i} />
                 )}
@@ -77,6 +80,8 @@ export const EditableShort: React.FC<{ scenes: Scene[] }> = ({ scenes }) => {
   }, []);
   return (
     <EditProvider src={SRC}>
+      <SceneList src={SRC} />
+      <DragLayer src={SRC} />
       <Short scenes={data} />
     </EditProvider>
   );
