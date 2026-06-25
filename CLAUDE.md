@@ -79,6 +79,20 @@ the **Until Then** game look (see `STYLE.md`). Three pieces:
 - Adding a scene type = new discriminated-union member in `schema.ts` + a component + a branch in `Video.tsx` (see `story`/`split` for the pattern). Built types: chat, overlay, card, split, story.
 - Pixel-art: reference characters by `characterId` (+ optional `emotion`), not raw image paths — keeps the cast consistent and lets the gen pipeline / cleanup swap art without touching scenes. Conform all art to `STYLE.md` + `palette.json`.
 - Not built yet (deliberate; `task.md`):
-  - **Pipeline gaps (P2.5, next session)**: transparent-bg cutout (#A6), IP-Adapter identity (#A3b), prompt presets (#A7), background gen (#A8). See `task.md` "NEXT SESSION".
+  - **P2.5 done**: cutout (#A6), IP-Adapter identity (#A3b), prompt presets (#A7), background gen (#A8). Remaining is the human cleanup (#A3d) + wiring approved art (#A9). See `task.md`.
   - **Drag-drop editor GUI**: intentionally deferred until the video output is proven. Keep `scenes.json` as the contract between any future editor and the renderer.
   - **Publish path (P4)**: thumbnail, metadata sidecar, YouTube upload, one-shot ship script.
+
+## Workflow conventions
+
+- **Review = read-only.** When asked to review, audit, or analyze (a diff, branch, file), do NOT
+  edit/fix anything — return findings by severity with recommendations. Change code only when the
+  ask is explicitly "fix"/"implement". (Use the `reviewer` skill for the merge gate.)
+- **Git/PR.** Don't commit or push unless asked. When asked: branch off `main` (this repo merges
+  via PR — see history), commit with a clear message, push, then `gh pr create`. If `gh` is
+  missing, give the manual `…/pull/new/<branch>` URL instead.
+- **Verify before "done."** This repo has no test suite, so prove changes the cheap way before
+  declaring success: `npx tsc --noEmit`, then a single still (`npx remotion still <Comp> out/x.png
+  --frame=N`) and look at the PNG — not a full render. Script logic (parsers, frame math, the
+  cutout/quantize steps) ships with a runnable `--selftest`; run it. Don't claim a render works
+  from code alone.
