@@ -1,0 +1,11 @@
+{
+  "_comment": "#A7 per-character prompt presets. gen-char composes positive = (this char's `prompt`, if any) + the CLI prompt arg + ', <emotion> expression, ' + config.styleSuffix; negative = the workflow's base negative + config.negativeExtra + this char's `negative`. The preset is the STABLE identity (hair/outfit) so a character looks the same every gen; the CLI prompt adds per-gen detail (pose/action). With a preset you can pass an empty CLI prompt ('').",
+  "mali": {
+    "prompt": "thai teenage girl, auburn hair in a ponytail, pink hoodie, blue jeans",
+    "negative": ""
+  },
+  "tao": {
+    "prompt": "thai teenage boy, short black hair, round glasses, green t-shirt, brown shorts",
+    "negative": "girl, female, long hair"
+  }
+}

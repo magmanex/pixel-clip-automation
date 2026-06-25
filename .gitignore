@@ -1,3 +1,7 @@
 node_modules/
 out/
 .remotion/
+
+# gen-char raw drafts (pre-quantize) + bg-cutout intermediates
+pipeline/_raw-*.png
+pipeline/_cut-*.png

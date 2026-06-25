@@ -3,6 +3,7 @@ import { Media } from "./schema";
 import { ChatHeader, Message, ChatScene as ChatSceneData } from "./schema";
 import { SKINS, Skin } from "./skins";
 import { DEFAULT_SFX, SFX_VOLUME } from "./config";
+import { spriteFor } from "./characters";
 
 const LEAD = 10; // frames before the first message starts typing
 const TYPING = 16; // default frames the "..." indicator shows before a message
@@ -22,10 +23,12 @@ const timeline = (messages: Message[], fps: number) => {
   return items;
 };
 
-const Header: React.FC<{ header: ChatHeader; skin: Skin }> = ({ header, skin }) => (
+const Header: React.FC<{ header: ChatHeader; skin: Skin }> = ({ header, skin }) => {
+  const avatar = header.avatar ?? spriteFor(header.characterId); // #A2 characterId → sprite
+  return (
   <div style={{ flex: "none", display: "flex", alignItems: "center", gap: 24, padding: "0 4px 28px", borderBottom: `2px solid ${skin.headerBorder}`, marginBottom: 28 }}>
-    {header.avatar ? (
-      <Img src={staticFile(header.avatar)} style={{ width: 96, height: 96, borderRadius: 48, objectFit: "cover" }} />
+    {avatar ? (
+      <Img src={staticFile(avatar)} style={{ width: 96, height: 96, borderRadius: 48, objectFit: "cover", imageRendering: "pixelated" }} />
     ) : (
       <div style={{ width: 96, height: 96, borderRadius: 48, background: skin.avatarBg, color: skin.avatarColor, fontSize: 48, display: "flex", alignItems: "center", justifyContent: "center" }}>
         {[...header.name][0] ?? "?"}
@@ -36,7 +39,8 @@ const Header: React.FC<{ header: ChatHeader; skin: Skin }> = ({ header, skin }) 
       {header.subtitle && <div style={{ color: skin.subColor, fontSize: 30 }}>{header.subtitle}</div>}
     </div>
   </div>
-);
+  );
+};
 
 const Bubble: React.FC<{ isRight: boolean; skin: Skin; children: React.ReactNode }> = ({ isRight, skin, children }) => (
   <div
@@ -106,6 +110,7 @@ export const ChatScene: React.FC<{ scene: ChatSceneData; sceneIndex?: number }> 
           const isRight = m.side === "right";
           const typing = frame < appear;
           const p = spring({ frame: frame - appear, fps, config: { damping: 14 } });
+          const sprite = spriteFor(m.characterId, m.emotion); // #A4 emotion → sprite
           return (
             <div
               key={i}
@@ -127,11 +132,16 @@ export const ChatScene: React.FC<{ scene: ChatSceneData; sceneIndex?: number }> 
                   {m.name}
                 </div>
               )}
-              {typing ? (
-                <Bubble isRight={isRight} skin={skin}><TypingDots skin={skin} /></Bubble>
-              ) : (
-                <Bubble isRight={isRight} skin={skin}>{m.text}</Bubble>
-              )}
+              <div style={{ display: "flex", flexDirection: isRight ? "row-reverse" : "row", alignItems: "flex-end", gap: 16 }}>
+                {sprite && !typing && (
+                  <Img src={staticFile(sprite)} style={{ width: 88, height: 88, flex: "none", imageRendering: "pixelated" }} />
+                )}
+                {typing ? (
+                  <Bubble isRight={isRight} skin={skin}><TypingDots skin={skin} /></Bubble>
+                ) : (
+                  <Bubble isRight={isRight} skin={skin}>{m.text}</Bubble>
+                )}
+              </div>
             </div>
           );
         })}

@@ -5,7 +5,17 @@
   "scripts": {
     "dev": "remotion studio",
     "render": "remotion render Short out/video.mp4",
-    "render:all": "for f in clips/*.json; do n=$(basename \"$f\" .json); remotion render \"Clip-$n\" \"out/$n.mp4\"; done"
+    "render:all": "for f in clips/*.json; do n=$(basename \"$f\" .json); remotion render \"Clip-$n\" \"out/$n.mp4\"; done",
+    "gen:char": "node scripts/gen-char.mjs",
+    "gen:bg": "node scripts/gen-char.mjs --scene",
+    "comfy:start": "ssh snowonyx@100.80.197.8 'bash sdev/private/comfyui/comfyctl.sh start'",
+    "comfy:stop": "ssh snowonyx@100.80.197.8 'bash sdev/private/comfyui/comfyctl.sh stop'",
+    "comfy:restart": "ssh snowonyx@100.80.197.8 'bash sdev/private/comfyui/comfyctl.sh restart'",
+    "comfy:status": "ssh snowonyx@100.80.197.8 'bash sdev/private/comfyui/comfyctl.sh status'",
+    "comfy:log": "ssh snowonyx@100.80.197.8 'bash sdev/private/comfyui/comfyctl.sh log'",
+    "comfy:deploy": "scp pipeline/comfyctl.sh snowonyx@100.80.197.8:sdev/private/comfyui/comfyctl.sh && ssh snowonyx@100.80.197.8 'chmod +x sdev/private/comfyui/comfyctl.sh'",
+    "quantize": "node scripts/quantize.mjs",
+    "cutout": "node scripts/cutout.mjs"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.0",
@@ -13,6 +23,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "remotion": "^4.0.0",
+    "sharp": "^0.35.2",
     "zod": "4.3.6"
   },
   "devDependencies": {

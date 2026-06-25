@@ -1,0 +1,23 @@
+[
+  {
+    "type": "story",
+    "durationSec": 19,
+    "bgImage": "bg/rooftop-dusk.png",
+    "transition": { "type": "fade" },
+    "characters": [
+      { "characterId": "mali", "pos": "left", "emotion": "neutral", "x": 40, "flip": true },
+      { "characterId": "tao", "pos": "right", "emotion": "neutral", "x": -40 }
+    ],
+    "dialogue": [
+      { "name": "—", "text": "ดาดฟ้าเดิม... ครั้งสุดท้ายก่อนทุกอย่างจะเปลี่ยนไป", "delaySec": 0.6, "holdSec": 1.4 },
+      { "characterId": "tao", "emotion": "neutral", "text": "ลมเย็นดีเนอะ พระอาทิตย์กำลังจะตกพอดี", "delaySec": 0.4, "holdSec": 1.2 },
+      { "characterId": "mali", "emotion": "neutral", "text": "พรุ่งนี้นายก็ไปแล้วจริงๆ สินะ", "delaySec": 0.5, "holdSec": 1.2 },
+      { "characterId": "tao", "emotion": "sad", "text": "อืม... ตั๋วเครื่องบินอยู่ในกระเป๋าแล้ว", "delaySec": 0.4, "holdSec": 1.3 },
+      { "characterId": "mali", "emotion": "sad", "text": "เราจะได้เจอกันอีกไหม", "delaySec": 0.5, "holdSec": 1.4 },
+      { "characterId": "tao", "emotion": "sad", "text": "ได้สิ... สักวันนึง เราต้องได้กลับมายืนตรงนี้ด้วยกันอีก", "delaySec": 0.4, "holdSec": 1.6 },
+      { "characterId": "mali", "emotion": "neutral", "text": "งั้น... ก็สัญญากันนะ", "delaySec": 0.5, "holdSec": 1.2 },
+      { "characterId": "tao", "emotion": "neutral", "text": "สัญญา จนกว่าจะถึงตอนนั้น", "delaySec": 0.4, "holdSec": 1.6 },
+      { "name": "Until Then", "text": "— จนกว่าจะถึงตอนนั้น —", "delaySec": 0.8, "holdSec": 2.2 }
+    ]
+  }
+]
